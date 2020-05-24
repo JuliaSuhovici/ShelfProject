@@ -2,74 +2,43 @@ package cabinet;
 import things.*;
 
 public class Cabinet {
-	private Thing topShelf;
-    private Thing middleShelf;
-    private Thing bottomShelf;
+	private Thing[] shelfes = new Thing[3]; 
     
     public Cabinet() {
     	
     }
     
-    public Thing whatIsOn( String shelfName ) {
-    	Thing object = null;
+    private int findShelfByName(String shelfName) {
+    	int index = -1;
     	switch(shelfName) {
     	case "topShelf":
-    		object = topShelf;
-    		break;
+    		index = 0;
     	case "middleShelf":
-    		object = middleShelf;
-    		break;
+    		index = 1;
     	case "bottomShelf":
-    		object = bottomShelf;
-    		break;
-    	default: System.out.println("There is no such shelf!!!");
-    	}
+    		index = 2;
+    	default: System.err.println("There is no such shelf!");
+    	}		
+    	return index;
+    }
+    
+    public Thing whatIsOn( String shelfName ){
+    	Thing object = null;
+    	int i = findShelfByName(shelfName);
+    	if(i != -1)
+    		object = shelfes[i]; 
     	return object;  	
     }
     
     public void put( String shelfName, Thing thing ) {
-    	switch(shelfName) {
-    	case "topShelf":
-    		if(topShelf == null)
-    			topShelf = thing;
-    		else 
-    			System.out.println("There is already something on the top shelf!");
-    		break;
-    		
-    	case "middleShelf":
-    		if(middleShelf == null) 
-    			middleShelf = thing;
-    		else 
-    			System.out.println("There is already something on the middle shelf!");
-    		break;
-    		
-    	case "bottomShelf":
-    		if(bottomShelf == null) 
-    			bottomShelf = thing;
-    		else 
-    			System.out.println("There is already something on the bottom shelf!");
-    		break;
-    		
-    	default: System.out.println("There is no such shelf!!!");
-    	} 	
+    	int i = findShelfByName(shelfName);
+    	if(i != -1)
+    		shelfes[i] = thing; 	
     }
     
     public Thing take( String shelfName ) {
-    	Thing object = null;
-    	switch(shelfName) {
-    	case "topShelf":
-    		object = topShelf;
-    		topShelf = null;
-    		break;
-    	case "middleShelf":
-    		object = middleShelf;
-    		middleShelf = null;
-    		break;
-    	case "bottomShelf":
-    		object = bottomShelf;
-    		bottomShelf = null;
-    		break;
-    	}
+    	Thing object = whatIsOn(shelfName);
+    	shelfes[findShelfByName(shelfName)] = null;
     	return object;
     }
 }
